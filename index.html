@@ -1,99 +1,114 @@
 <html>
     <head>
-        <title>Bootsrtap - React Example</title>
+        <title>Bootstrap Example</title>
         <script src="js/react.js"></script>
         <script src="js/react-dom.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.js"></script>
-
-        <link rel="stylesheet" href="css/bootstrap.css" >
+        <link href="css/bootstrap.css" rel="stylesheet" >
     </head>
     <body>
         <div id="app"></div>
-          
-          <script type="text/babel">
-            var MainContent = React.createClass({
-                render: () => {
-                    return(
-                        <div className="row">
-                            <h1>Main content goes here..!</h1>
-                        </div>
-                    )
-                }
-            });
 
+        <script type="text/babel">
             var Footer = React.createClass({
-                render: () => {
+                getDefaultProps: function(){
+                    return{
+                        webSite: 'JkSoft Inc.',
+                        copy_year: 2020
+                    }
+                },
+                render: function(){
                     return(
-                        <div>
+                        <div className="container">
                             <hr/>
                             <footer>
-                                <p>&copy; 2020 JkSoft, Inc.</p>
+                                <p>&copy; {this.props.copy_year} {this.props.webSite}</p>
                             </footer>
                         </div>
                     )
                 }
-            });
-            var Jumbotron = React.createClass({
-                render: function() {
+            })
+            var MainContent = React.createClass({
+                render: function(){
                     return(
-                        <div className="jumbotron">
-                            <div className="container">
-                            <h1>Hello, world Example!</h1>
-                            <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-                            <p><a className="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+                        <div className="container">
+                            <div className="row">
+                                <h1>Main Content goes here</h1>
                             </div>
                         </div>
                     )
                 }
             });
 
-
-            var NavBar = React.createClass({
-                // PropTypes: {
-                //     brand: React.propTypes.string
-                // },
-                getDefaultProps: function() {
+            var Jumbotran = React.createClass({
+                PropTypes: {
+                    heading: React.PropTypes.string,
+                    text: React.PropTypes.string,
+                    link: React.PropTypes.string
+                },
+                getDefaultProps: function(){
                     return {
-                        brand: 'My Site'
+                        heading: 'Welcome',
+                        text: 'Welcome to our shiny new website build with React components',
+                        link: 'http://google.com'
                     }
                 },
                 render: function() {
                     return(
-                        <div>
-                            <nav className="navbar navbar-inverse navbar-fixed-top">
-                                <div className="container">
-                                    <div className="navbar-header">
-                                        <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                                        <span className="sr-only">Toggle navigation</span>
-                                        <span className="icon-bar"></span>
-                                        <span className="icon-bar"></span>
-                                        <span className="icon-bar"></span>
-                                        </button>
-                                        <a className="navbar-brand" href="#">{this.props.title}</a>
-                                    </div>
-                                    <div id="navbar" className="navbar-collapse collapse">
-                                        <ul className="nav navbar-nav">
-                                        <li className="active"><a href="#">Home</a></li>
-                                        <li><a href="#about">About</a></li>
-                                        <li><a href="#contact">Contact</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </nav>
+                        <div className="jumbotron">
+                            <div className="container">
+                                <h1>{this.props.heading}</h1>
+                                <p>{this.props.text}</p>
+                                <p><a className="btn btn-primary btn-lg" href={this.props.link} role="button">Get started &raquo;</a></p>
+                            </div>
                         </div>
                     )
                 }
             })
+            var NavBar = React.createClass({
+                    propTypes: {
+                        siteLogo: React.PropTypes.string
+                    },
+                    getDefaultProps: function(){
+                        return {
+                            siteLogo: 'JkSoft Inc.'
+                        }
+                    },
+                    render: function() {
+                        return(
+                            <div>
+                                <nav className="navbar navbar-default navbar-fixed-top">
+                                    <div className="container">
+                                        <div className="navbar-header">
+                                            <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                                            <span className="sr-only">Toggle navigation</span>
+                                            <span className="icon-bar"></span>
+                                            <span className="icon-bar"></span>
+                                            <span className="icon-bar"></span>
+                                            </button>
+                                            <a className="navbar-brand" href="#">{this.props.siteLogo}</a>
+                                        </div>
+                                        <div id="navbar" className="navbar-collapse collapse">
+                                            <ul className="nav navbar-nav">
+                                            <li className="active"><a href="#">Home</a></li>
+                                            <li><a href="#about">About</a></li>
+                                            <li><a href="#contact">Contact</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </nav>
+                            </div>
+                        )
+                    }
+            });
             var Root = React.createClass({
                 render: function() {
-                    return(
+                    return (
                         <div>
-                            <NavBar title="JkSoft" />
-                            <Jumbotron />
-                            <div className="container">
-                                <MainContent />
-                                <Footer />
-                            </div>
+                            <NavBar />
+                            <Jumbotran />
+                            <MainContent />
+                            <Footer />
                         </div>
                     )
                 }
@@ -103,6 +118,6 @@
                 <Root />,
                 document.getElementById('app')
             );
-          </script>
+        </script>
     </body>
 </html>
