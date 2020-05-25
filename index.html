@@ -5,6 +5,7 @@
         <script src="js/react-dom.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.js"></script>
         <link href="css/bootstrap.css" rel="stylesheet" >
+        <link href="css/style.css" rel="stylesheet" >
     </head>
     <body>
         <div id="app"></div>
@@ -19,7 +20,7 @@
                 },
                 render: function(){
                     return(
-                        <div className="container">
+                        <div>
                             <hr/>
                             <footer>
                                 <p>&copy; {this.props.copy_year} {this.props.webSite}</p>
@@ -31,10 +32,18 @@
             var MainContent = React.createClass({
                 render: function(){
                     return(
-                        <div className="container">
-                            <div className="row">
-                                <h1>Main Content goes here</h1>
-                            </div>
+                        <div className="row">
+                            <h1>Home content goes here</h1>
+                        </div>
+                    )
+                }
+            });
+
+            var AboutContent = React.createClass({
+                render: function(){
+                    return(
+                        <div className="row">
+                            <h1>About content goes here</h1>
                         </div>
                     )
                 }
@@ -71,13 +80,29 @@
                     },
                     getDefaultProps: function(){
                         return {
-                            siteLogo: 'JkSoft Inc.'
+                            siteLogo: 'JkSoft Inc.',
+                            color: 'light'
                         }
                     },
                     render: function() {
+                        if(this.props.color == 'dark') {
+                            var navClass='navbar navbar-inverse navbar-fixed-top';
+                        } else{
+                            var navClass='navbar navbar-default navbar-fixed-top';
+                        }
+                        var homeActive = '';
+                        var aboutActive = '';
+                        var contactActive = '';
+                        if(this.props.page == 'home') {
+                            homeActive= 'active';
+                        } else if(this.props.page == 'about') {
+                            aboutActive = 'active';
+                        } else if(this.props.page == 'contact') {
+                            contactActive = 'active';
+                        }
                         return(
                             <div>
-                                <nav className="navbar navbar-default navbar-fixed-top">
+                                <nav className={navClass}>
                                     <div className="container">
                                         <div className="navbar-header">
                                             <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -90,9 +115,9 @@
                                         </div>
                                         <div id="navbar" className="navbar-collapse collapse">
                                             <ul className="nav navbar-nav">
-                                            <li className="active"><a href="#">Home</a></li>
-                                            <li><a href="#about">About</a></li>
-                                            <li><a href="#contact">Contact</a></li>
+                                            <li className={homeActive}><a onClick={this.props.homeClick} href="#">Home</a></li>
+                                            <li className={aboutActive}><a onClick={this.props.aboutClick} href="#about">About</a></li>
+                                            <li className={contactActive}><a onClick={this.props.contactClick} href="#contact">Contact</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -101,14 +126,51 @@
                         )
                     }
             });
+
+
             var Root = React.createClass({
+                getInitialState: function() {
+                    return {
+                        page: 'home'
+                    }
+                },
+                handleHomeClick: function() {
+                    this.setState({
+                        page: 'home'
+                    })
+                },
+                handleAboutClick: function() {
+                    this.setState({
+                        page: 'about'
+                    })
+                },
+                handleContactClick: function() {
+                    this.setState({
+                        page: 'contact'
+                    })
+                },
                 render: function() {
+                    if(this.state.page == 'home') {
+                        var jumbotran = <Jumbotran />;
+                        var DynamicContent = <MainContent />;
+                    } else if(this.state.page == 'about') {
+                        var jumbotran = '';
+                        var DynamicContent = <AboutContent />
+                    }
                     return (
                         <div>
-                            <NavBar />
-                            <Jumbotran />
-                            <MainContent />
-                            <Footer />
+                            <NavBar 
+                                color='dark'
+                                page={this.state.page}
+                                homeClick={this.handleHomeClick}
+                                aboutClick={this.handleAboutClick}
+                                contactClick={this.handleContactClick}
+                                />
+                            {jumbotran}
+                            <div className="container about">
+                                {DynamicContent}
+                                <Footer />
+                            </div>
                         </div>
                     )
                 }
